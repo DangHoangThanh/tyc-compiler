@@ -630,21 +630,6 @@ For example:
 }
 ```
 
-### Assignment Statement
-
-An **assignment statement** assigns a value to a variable. An assignment takes the following form:  
-```tyc
-<identifier> = <expression>;
-```
-
-The type of the value returned by the `<expression>` must match the type of the variable.  
-
-The following code fragment contains examples of assignment:
-```tyc
-x = 5;
-x = x + 1;
-```
-
 ### If Statement
 
 The **if statement** conditionally executes one of two statements based on the value of an expression. The form of an if statement is:  
@@ -799,12 +784,17 @@ The type of the expression must match the return type of the function.
 
 ### Expression Statement
 
-An **expression statement** is an expression followed by a semicolon. Expression statements are used for their side effects (such as function calls).
+An **expression statement** is an expression followed by a semicolon. Expression statements are used for their side effects (such as function calls, assignments, or increment/decrement operations).
+
+An assignment expression can be used as an expression statement. When used as a statement, the assignment performs the side effect of updating the variable's value. The type of the value returned by the expression must match the type of the variable being assigned.
 
 For example:
 ```tyc
-printInt(x);
-x + y;  // valid but does nothing useful
+printInt(x);      // function call expression statement
+x = 5;            // assignment expression statement
+x = x + 1;        // assignment expression statement
+x++;              // increment expression statement
+x + y;            // valid but does nothing useful
 ```
 
 ---
@@ -1268,7 +1258,7 @@ The main structural elements include:
 
 - **Structs**: Composite types with named members of explicit types
 - **Functions**: Declarations with return types, parameters, and bodies
-- **Statements**: Variable declarations, assignments, control flow (if, while, for, switch-case), break, continue, return, expression statements, and blocks
+- **Statements**: Variable declarations, control flow (if, while, for, switch-case), break, continue, return, expression statements (including assignments), and blocks
 - **Expressions**: Primary expressions (identifiers, literals, parenthesized, member access), unary operations, binary operations following operator precedence, function calls, and postfix operations (increment/decrement)
 - **Types**: `int`, `float`, `string`, `void`, struct types, and type inference using `auto`
 - **Variable Declaration**: Can use `auto` for type inference or explicit types (`int`, `float`, `string`, or struct type names)
