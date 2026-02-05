@@ -190,7 +190,7 @@ expr
     | expr AND expr                     # LogicalAndExpr
     | expr OR expr                      # LogicalOrExpr
     | <assoc=right> expr ASSIGN expr    # AssignmentExpr
-    | ID LPAREN argList? RPAREN         # FunctionCallExpr
+    | expr LPAREN argList? RPAREN         # FunctionCallExpr
     | primary                           # PrimaryExprRule
     ;
 

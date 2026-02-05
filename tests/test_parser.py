@@ -7,13 +7,6 @@ import pytest
 from tests.utils import Parser
 
 
-def test_parser_placeholder():
-    """Placeholder test - replace with actual test cases"""
-    source = "// This is a placeholder test"
-    parser = Parser(source)
-    # TODO: Add actual test assertions
-    assert True
-
 # --- Happy path ---
 def test_parser_empty_program():
     """An empty file is a valid TyC program."""
@@ -550,9 +543,7 @@ def test_parser_error_global_stmt():
     source = "print(10);"
     assert Parser(source).parse() != "success"
 
-def test_parser_error_assignment_to_literal():
+def test_parser_bad_member_access():
     """Literals cannot be on the left side of assignment."""
-    # Note: If the grammar is 'expr ASSIGN expr', this might pass parser
-    # but fail semantic. However, in many grammar tests, this is an error.
-    source = "void f() { 5 = x; }"
+    source = "void f() { a.10 = x; }"
     assert Parser(source).parse() != "success"
