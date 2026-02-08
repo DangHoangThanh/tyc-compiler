@@ -202,6 +202,7 @@ primary
     : LPAREN expr RPAREN
     | ID
     | literal
+    | LBRACE argList RBRACE     // struct literal
     ;
 
 literal
@@ -298,7 +299,7 @@ STRING_LITERAL
     ;
 
 fragment ESCAPE_SEQ
-    : '\\' [bfnrt"\\']
+    : '\\' [bfnrt"\\]
     ;
 
 // Identifiers

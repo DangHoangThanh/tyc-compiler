@@ -415,6 +415,35 @@ def test_parser_struct_nested_type_ref():
     source = "struct A { B b; }; struct B { int x; };"
     assert Parser(source).parse() == "success"
     
+def test_parser_var_decl_nested_init():
+    source = """
+    struct Point { int x; };
+    struct Rect { Point p; };
+    void main() { Rect r = {{1}}; }
+    """
+    assert Parser(source).parse() == "success"
+    
+def test_parser_func_call_struct_literal():
+    source = "void main() { f({1, 2}); }"
+    assert Parser(source).parse() == "success"
+    
+def test_parser_expr_struct_literal_complex():
+    source = "void main() { p = {1+2, f(a)}; }"
+    assert Parser(source).parse() == "success"
+
+def test_parser_error_assignment_to_literal():
+    source = "void main() { 5 = x; }"
+    assert Parser(source).parse() != "success"
+    
+def test_parser_error_assignment_in_case():
+    source = """
+    void main() {
+        switch (x) {
+            case a = 5: break; 
+        }
+    }
+    """
+    assert Parser(source).parse() != "success"
     
 # --- Error ---
 

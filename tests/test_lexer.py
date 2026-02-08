@@ -601,3 +601,19 @@ def test_lexer_error_invalid_char_caret():
     source = "^"
     tokenizer = Tokenizer(source)
     assert "Error Token" in tokenizer.get_tokens_as_string()
+    
+def test_lexer_illegal_escape_mixed():
+    tokenizer = Tokenizer('"Xin \\a Chao"')
+    assert tokenizer.get_tokens_as_string() == "Illegal Escape In String: Xin \\a"
+
+def test_lexer_illegal_precedence():
+    tokenizer = Tokenizer('"\\a unclosed')
+    assert tokenizer.get_tokens_as_string() == "Illegal Escape In String: \\a"
+    
+def test_lexer_illegal_escape_single_quote():
+    tokenizer = Tokenizer('"\\\'"')
+    assert tokenizer.get_tokens_as_string() == "Illegal Escape In String: \\'"
+    
+def test_lexer_illegal_escape_multiple():
+    tokenizer = Tokenizer('"\\a \\b"')
+    assert tokenizer.get_tokens_as_string() == "Illegal Escape In String: \\a"
