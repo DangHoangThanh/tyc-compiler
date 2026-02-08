@@ -579,7 +579,7 @@ def test_lexer_error_mixed_valid_and_invalid():
 def test_lexer_error_unclosed_string_eof():
     source = '"'
     tokenizer = Tokenizer(source)
-    assert 'Error Token' in tokenizer.get_tokens_as_string()
+    assert 'Unclosed String' in tokenizer.get_tokens_as_string()
 
 def test_lexer_error_illegal_escape_space():
     source = '"\\ "'

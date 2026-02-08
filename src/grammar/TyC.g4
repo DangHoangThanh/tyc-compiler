@@ -322,13 +322,16 @@ WS
 
 
 // --- Error Rules ---
-ERROR_CHAR
-    : . 
-    ;
-
 ILLEGAL_ESCAPE
     : '"' (ESCAPE_SEQ | ~["\\\r\n])* '\\' ~[bfnrt"\\\r\n]
+        {self.text = self.text[1:]}
     ;
 
 UNCLOSE_STRING
-    : '"' (ESCAPE_SEQ | ~["\\\r\n])* ;
+    : '"' (ESCAPE_SEQ | ~["\\\r\n])*
+        {self.text = self.text[1:]}
+    ;
+
+ERROR_CHAR
+    : . 
+    ;
