@@ -152,7 +152,7 @@ switchBlockStatementGroup
     ;
 
 switchLabel
-    : CASE expr COLON
+    : CASE condExpr COLON  // Changed from expr to condExpr
     | DEFAULT COLON
     ;
 
@@ -177,21 +177,34 @@ semiStmt
     ;
 
 // --- Expressions ---
-// Precedence follows the specification table strictly.
+
+// Top-level expression rule (includes assignment)
 expr
-    : expr (INC | DEC)                  # PostfixExpr
-    | (INC | DEC) expr                  # PrefixExpr
-    | (BANG | PLUS | MINUS) expr        # UnaryExpr
-    | expr DOT ID                       # MemberAccessExpr
-    | expr (MUL | DIV | MOD) expr       # MultiplicativeExpr
-    | expr (PLUS | MINUS) expr          # AdditiveExpr
-    | expr (LT | LE | GT | GE) expr     # RelationalExpr
-    | expr (EQUAL | NOTEQUAL) expr      # EqualityExpr
-    | expr AND expr                     # LogicalAndExpr
-    | expr OR expr                      # LogicalOrExpr
-    | <assoc=right> expr ASSIGN expr    # AssignmentExpr
-    | expr LPAREN argList? RPAREN         # FunctionCallExpr
-    | primary                           # PrimaryExprRule
+    : lvalue ASSIGN expr                    # AssignmentExpr
+    | condExpr                              # ExprFallback
+    ;
+
+// Valid Left-Hand Side (L-Value)
+lvalue
+    : ID
+    | lvalue DOT ID
+    | LPAREN lvalue RPAREN
+    ;
+
+// Conditional/Logic Expressions (Everything EXCEPT assignment)
+condExpr
+    : condExpr (INC | DEC)                  # PostfixExpr
+    | (INC | DEC) condExpr                  # PrefixExpr
+    | (BANG | PLUS | MINUS) condExpr        # UnaryExpr
+    | condExpr DOT ID                       # MemberAccessExpr
+    | condExpr (MUL | DIV | MOD) condExpr   # MultiplicativeExpr
+    | condExpr (PLUS | MINUS) condExpr      # AdditiveExpr
+    | condExpr (LT | LE | GT | GE) condExpr # RelationalExpr
+    | condExpr (EQUAL | NOTEQUAL) condExpr  # EqualityExpr
+    | condExpr AND condExpr                 # LogicalAndExpr
+    | condExpr OR condExpr                  # LogicalOrExpr
+    | condExpr LPAREN argList? RPAREN       # FunctionCallExpr
+    | primary                               # PrimaryExprRule
     ;
 
 argList
@@ -202,7 +215,7 @@ primary
     : LPAREN expr RPAREN
     | ID
     | literal
-    | LBRACE argList RBRACE     // struct literal
+    | LBRACE argList RBRACE      // struct literal
     ;
 
 literal
